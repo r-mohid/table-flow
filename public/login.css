@@ -1,0 +1,73 @@
+
+
+body {
+  font-family: "Poppins", sans-serif;
+}
+
+.left-section {
+  background-color: #f8f9fa;
+  height: 100vh;
+}
+
+.left-text {
+  margin-left:20%;
+  margin-top: 20%
+}
+
+.right-section {
+  background-color: #ffffff;
+  height: 100vh;
+}
+
+.title {
+  font-weight: 600;
+  font-size: 70px;
+}
+
+.sub-line {
+  margin-top: 3%;
+  max-width: 80%;
+  font-weight: 400;
+  font-size: 16px
+}
+
+.right-text {
+  margin-left: 20%;
+  margin-top: 15%
+}
+
+.logo {
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.login-title{
+  margin-top: 20%;
+  font-weight: 600
+}
+
+.login-subtitle {
+  color: #BDBDBD;
+  margin-top: -4%;
+  margin-bottom: 10%;
+}
+
+.footer-text {
+    color: #BDBDBD;
+    font-size: 14px;
+    position: absolute;
+    bottom: 0;
+}
+
+.btn {
+  background-color: #18181a
+}
+
+.forgot-text {
+  margin-top: 2%;
+  color: #BDBDBD;
+}
+
+.floor-levels {
+  
+}

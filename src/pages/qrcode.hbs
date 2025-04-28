@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>QR Code Display</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <style>
+      body {
+        text-align: center;
+        font-family: Arial, sans-serif;
+        margin-top: 50px;
+      }
+      #qr-container {
+        margin: 20px auto;
+        width: 250px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Scan the QR Code</h1>
+    <div id="qr-container">
+      <img id="qrcode" alt="QR Code" />
+    </div>
+
+    <script>
+      fetch("/generate-qrcode")
+        .then((response) => response.json())
+        .then((data) => {
+          document.getElementById("qrcode").src = data.qrCode;
+        });
+    </script>
+  </body>
+</html>

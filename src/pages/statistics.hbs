@@ -1,0 +1,150 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>TableFlow | Statistics</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link href="tables.css" rel="stylesheet" />
+    <script
+      src="https://kit.fontawesome.com/271e6f40b3.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://unpkg.com/html5-qrcode"></script>
+  </head>
+  <body>
+
+    <nav class="navbar navbar-light bg-white px-3">
+      <div class="d-flex align-items-center w-100">
+
+        <div class="d-flex align-items-center">
+          <img
+            src="https://cdn.glitch.global/f5901100-4ded-41e9-acc2-a4db3544464e/tableflow.png?v=1740408924639"
+            alt="TableFlow logo"
+            width="35"
+            height="35"
+            style="border-radius: 5px;"
+          />
+          <span
+            class="nav-link"
+            style="color: #212427; margin-left: 20px; font-size: 22px; font-weight: 500;"
+          >
+            Order Management
+          </span>
+        </div>
+
+        <div class="ms-auto d-flex align-items-center">
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnSA1zygA3rubv-VK0DrVcQ02Po79kJhXo_A&s"
+            alt="Profile"
+            width="40"
+            height="40"
+            style="border-radius: 50%; object-fit: cover; margin-right:10px;"
+          />
+        </div>
+
+      </div>
+    </nav>
+
+    <div class="app-container">
+      <div class="side">
+        <div class="side-buttons">
+          <a
+            href="/tables"
+            class="nav-button d-flex align-items-center justify-content-center"
+            style="text-decoration: none; color: inherit;"
+          >
+            <i class="fa-solid fa-layer-group fa-xl"></i>
+          </a>
+          <a href="/orders" class="nav-button d-flex align-items-center justify-content-center" style="text-decoration: none; color: inherit;">
+            <i class="fa-solid fa-box fa-xl"></i>
+          </a>
+          <div class="d-flex align-items-center justify-content-center">
+            <a class="divider">______</a>
+          </div>
+          <a
+            href="/statistics"
+            class="nav-button d-flex align-items-center justify-content-center"
+            style="margin-top: 10px; text-decoration: none; color: inherit; background-color: #d9d9d9"
+          >
+            <i class="fa-solid fa-chart-line fa-xl"></i>
+          </a>
+
+          <div
+            id="logoutBtn"
+            class="nav-button d-flex align-items-center justify-content-center logout-btn"
+          >
+            <i class="fa-solid fa-arrow-right-from-bracket fa-xl"></i>
+          </div>
+        </div>
+      </div>
+      <div class="main" style="padding:30px;">
+        <div class="row">
+          <div class="col-12 col-md-6 col-lg-4 mb-4">
+            <div class="card white z-depth-2 p-3">
+              <div class="card-content">
+                <h5>🛒 Total Orders</h5>
+                <h3 id="totalOrders">Loading...</h3>
+                <h5 style="margin-top: 20px;">💰 Revenue Today</h5>
+                <h4>£<span id="revenueToday">0</span></h4>
+                <h5 style="margin-top: 20px;">💷 Total Revenue</h5>
+                <h4>£<span id="revenueTotal">0</span></h4>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-6 col-lg-4 mb-4">
+            <div class="card white z-depth-2 p-3">
+              <div class="card-content">
+                <h5>🔥 Most Ordered Items</h5>
+                <ul id="topMenuItems" style="margin-top: 15px;"></ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-6 col-lg-4 mb-4">
+            <div class="card white z-depth-2 p-3">
+              <div class="card-content">
+                <h5>🍳 Ingredient Usage</h5>
+                <ul id="ingredientUsage" style="margin-top: 15px;"></ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-6 col-lg-4 mb-4">
+            <div class="card white z-depth-2 p-3">
+              <div class="card-content">
+                <h5>🚨 Stock Alerts</h5>
+                <ul id="stockAlerts" style="margin-top: 15px;"></ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <script src="statistics.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"
+    ></script>
+    <script>
+      document.getElementById('logoutBtn').addEventListener('click', () => {
+        window.location.href = '/logout';
+      });
+      </script>
+  </body>
+</html>

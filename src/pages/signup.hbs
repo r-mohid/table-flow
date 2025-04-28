@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>TableFlow | Signup</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="login.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-7 left-section d-flex">
+          <div class="left-text">
+            <h1 class="title">Hello<br>TableFlow!</h1><br>
+            <p class="sub-line">Streamline your restaurant with seamless table management and effortless online ordering. Optimise stock take, seating and enhance the dining experience!</p>
+            <p class="footer-text">TableFlow &copy; 2025</p>
+          </div>
+        </div>
+        
+        <div class="col-md-5 right-section d-flex">
+          <div class="right-text">
+            <h2 class="logo">TableFlow</h2>
+            <h2 class="login-title">Join the Flow!</h2>
+            <p class="login-subtitle">
+              Already have an account?
+              <a href="/login" style="color:black; text-decoration: underline;">Login to an existing account.</a>
+            </p>
+            <form action="/signup" method="POST">
+              <div class="row">
+                <div class="input-field col s12">
+                  <input id="storeid" name="storeid" type="text" class="validate" required>
+                  <label for="storeid">Store ID</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="input-field col s12">
+                  <input id="password" name="password" type="password" class="validate" required>
+                  <label for="password">Password</label>
+                </div>
+              </div>
+              <button style="width: 100%" type="submit" class="btn">Register</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  </body>
+</html>

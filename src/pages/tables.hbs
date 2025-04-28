@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>TableFlow | Tables</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="tables.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/271e6f40b3.js" crossorigin="anonymous"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://unpkg.com/html5-qrcode"></script>
+  </head>
+  <body>
+    <nav class="navbar navbar-light bg-white px-3">
+      <div class="d-flex align-items-center w-100">
+        <div class="d-flex align-items-center">
+          <img src="https://cdn.glitch.global/f5901100-4ded-41e9-acc2-a4db3544464e/tableflow.png?v=1740408924639" alt="TableFlow logo" width="35" height="35" style="border-radius: 5px;">
+          <span class="nav-link" style="color: #212427; margin-left: 20px; font-size: 22px; font-weight: 500;"> Floor Plan </span>
+        </div>
+        <div class="ms-auto d-flex align-items-center">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnSA1zygA3rubv-VK0DrVcQ02Po79kJhXo_A&s" alt="Profile" width="40" height="40" style="border-radius: 50%; object-fit: cover; margin-right:10px;">
+        </div>
+      </div>
+    </nav>
+    <div class="app-container">
+      <div class="side">
+        <div class="side-buttons">
+          <div class="nav-button d-flex align-items-center justify-content-center" style="background-color: #d9d9d9">
+            <i class="fa-solid fa-layer-group fa-xl"></i>
+          </div>
+          <a href="/orders" class="nav-button d-flex align-items-center justify-content-center" style="text-decoration: none; color: inherit;">
+            <i class="fa-solid fa-box fa-xl"></i>
+          </a>
+          <div class="d-flex align-items-center justify-content-center">
+            <a class="divider">______</a>
+          </div>
+          <a 
+            href="/statistics"
+            class="nav-button d-flex align-items-center justify-content-center"
+            style="margin-top: 10px; text-decoration: none; color: inherit;"
+          >
+            <i class="fa-solid fa-chart-line fa-xl"></i>
+          </a>
+          <div
+            id="logoutBtn"
+            class="nav-button d-flex align-items-center justify-content-center logout-btn"
+          >
+            <i class="fa-solid fa-arrow-right-from-bracket fa-xl"></i>
+          </div>
+        </div>
+      </div>
+      <div class="main">
+        <div class="add-party d-flex align-items-center" style="position: relative">
+          <button id="openReservation" class="btn pill d-flex align-items-center" style="text-transform: none; position: absolute; right: 10px; background-color: #212529; color: white;">
+            <i style="margin-right: 5px;" class="fa-solid fa-plus"></i>
+            <a> Create Reservation</a>
+          </button>
+          <button id="openCreateTable" class="btn pill d-flex align-items-center" style="text-transform: none; position: absolute; right: 210px; background-color: #212529; color: white;">
+            <i style="margin-right: 5px;" class="fa-solid fa-plus"></i>
+            <a> Add Table</a>
+          </button>
+        </div>
+        <div class="container" style="margin:0;">
+          <div class="row" style="margin:0;">
+            <div class="col-12 col-md-3 floor-levels d-flex align-items-center"></div>
+            <div class="col-12 col-md-9 floor-levels d-flex align-items-center">
+              <div id="floor-btns-container" class="d-flex align-items-center" style="gap: 10px;"></div>
+              <i id="add-floor-btn" class="fa-solid fa-ellipsis-vertical" style="font-size: 26px; margin-left: 15px; cursor: pointer;"></i>
+            </div>
+          </div>
+        </div>
+        <div class="container">
+          <div class="row">
+            <div class="parties col-12 col-md-3 order-0 order-md-0">
+              <div style="margin-left: 5%">
+                <a style="font-size: 30px; font-weight: 500">Reservations</a>
+                <br>
+                <a id="reservationCount" style="color: #949494;">
+                  <i class="fa-solid fa-user"></i> 0 </a>
+              </div>
+              <ul style="padding: 0; margin: 0; width: 100%;">
+                <li style="width: 100%; height: 70vh;">
+                  <div class="party-details d-flex justify-content-center">
+                    <a id="no-parties-message" style="display: {{#if reservations.length}}none{{else}}block{{/if}}; color: #dbdbdb; font-size: 20px; font-weight: 600; margin-top: 30px; text-align: center;"> No parties currently waiting. </a>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="table-list col-12 col-md-9 order-1 order-md-1">
+              <div class="grid-container">
+                {{#each tables}}
+                  <div class="grid-item" data-floor="{{floor}}" data-max="{{maxOccupants}}">
+                    <div id="{{tableId}}">
+                      <div class="d-flex justify-content-between align-items-center">
+                        <p class="table-number" style="margin: 0;">{{inc @index}}</p>
+                        <p class="status" style="margin: 0;">{{#ifEquals status "occupied"}}Occupied{{else}}Unoccupied{{/ifEquals}}</p>
+                      </div>
+                      <div class="symbols d-flex align-items-center mt-2" style="color: #BDBDBD;">
+                        <i class="fa-solid fa-triangle-exclamation me-2" title="{{warning}}"></i>
+                        <a id="comments" style="margin-right: 10px;">{{notes}}</a>
+                        <i class="fa-solid fa-users me-1"></i>
+                        <a id="users">{{users}}</a>
+                      </div>
+                    </div>
+                  </div>
+                {{/each}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="reservationModal" class="modal">
+      <div class="modal-content">
+        <h4>Claim a Table</h4>
+        <form>
+          <div class="input-field">
+            <input type="text" name="partySize" required>
+            <label for="partySize">Reservation Name</label>
+          </div>
+          <div class="input-field">
+            <input type="number" name="partySize" min="1" required>
+            <label for="partySize">Number of People</label>
+          </div>
+          <div class="input-field">
+            <textarea class="materialize-textarea" name="notes"></textarea>
+            <label for="notes">Notes (optional)</label>
+          </div>
+          <div class="modal-footer" style="padding: 0; border-top: none;">
+            <button type="submit" class="modal-close waves-effect waves-green btn" style="margin-top: 15px;">Submit</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div id="deleteReservationModal" class="modal">
+      <div class="modal-content">
+        <h4>Reservation</h4>
+        <p>Please scan a QR code to seat this table.</p>
+        <div id="reservation-notes" style="margin-top: 15px; font-style: italic; color: #555;"></div>
+        <div id="qr-reader" style="margin-top: 20px;"></div>
+        <p id="scan-success-msg" style="display:none; color: green;">✅ Table assigned!</p>
+      </div>
+      <div class="modal-footer">
+        <button id="confirmDelete" class="btn red modal-close">Delete</button>
+        <button class="btn-flat modal-close" id="cancelDelete">Cancel</button>
+      </div>
+    </div>
+    <div id="tableActionModal" class="modal">
+      <div class="modal-content">
+        <h4>Manage Table</h4>
+        <p>You can clear the table or update the warning.</p>
+        <div class="input-field">
+          <input type="text" id="warningText" placeholder="Enter warning message">
+          <label for="warningText">Warning Message</label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="clearTableBtn" class="modal-close btn red">Clear Table</button>
+        <button id="saveWarningBtn" class="modal-close btn green">Update Warning</button>
+        <button id="takeOrderBtn" class="modal-close btn info">Take Order</button>
+      </div>
+    </div>
+    <div id="createTableModal" class="modal">
+      <div class="modal-content">
+        <h4>Add New Table</h4>
+        <div class="input-field">
+          <select id="tableFloorSelect">
+            <option value="" disabled selected>Choose floor</option>
+          </select>
+          <label>Select Floor</label>
+        </div>
+        <div class="input-field">
+          <input type="number" id="maxOccupantsInput" min="1" required />
+          <label for="maxOccupantsInput">Maximum Occupants</label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="createTableBtn" class="modal-close btn green">Create Table</button>
+      </div>
+    </div>
+    <div id="takeOrderModal" class="modal">
+      <div class="modal-content">
+        <h4>Take Order</h4>
+        <div id="orderItemsContainer"></div>
+        <button id="addOrderItemBtn" class="btn">+ Add Item</button>
+      </div>
+      <div class="modal-footer">
+        <button id="submitOrderBtn" class="btn green">Submit Order</button>
+        <button class="modal-close btn grey lighten-1">Close</button>
+      </div>
+    </div>
+    <div id="addFloorModal" class="modal">
+      <div class="modal-content">
+        <h4>Add New Floor</h4>
+        <div class="input-field">
+          <input id="newFloorName" type="text" placeholder="e.g. Second Floor">
+          <label for="newFloorName">Floor Name</label>
+        </div>
+        <div id="existingFloorsList" style="margin-top: 20px;">
+          <h6>Existing Floors:</h6>
+          <ul id="floorList" style="list-style: none; padding-left: 0;"></ul>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-close btn grey lighten-1">Cancel</button>
+        <button id="createFloorBtn" class="btn green">Add Floor</button>
+      </div>
+    </div>
+    <script>
+      window.__INITIAL_RESERVATIONS__ = {
+        {
+          {
+            json reservations
+          }
+        }
+      };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="table.js"></script>
+    <script>
+      document.getElementById('logoutBtn').addEventListener('click', () => {
+        window.location.href = '/logout';
+      });
+      </script>
+  </body>
+</html>

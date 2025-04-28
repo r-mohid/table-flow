@@ -1,0 +1,115 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>TableFlow | Login</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link href="login.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-7 left-section d-flex">
+          <div class="left-text">
+            <h1 class="title">Hello<br />TableFlow!</h1><br />
+            <p class="sub-line">Streamline your restaurant with seamless table
+              management and effortless online ordering. Optimise stock take,
+              seating and enhance the dining experience!</p>
+            <p class="footer-text">TableFlow &copy; 2025</p>
+          </div>
+        </div>
+
+        <div class="col-md-5 right-section d-flex">
+          <div class="right-text">
+            <h2 class="logo">TableFlow</h2>
+            <h2 class="login-title">Welcome Back!</h2>
+            <p class="login-subtitle">
+              Don't have an account?
+              <a href="/signup" style="color:black; text-decoration: underline;">Create a new account.</a>
+            </p>
+            <form id="loginForm">
+              <div class="row">
+                <div class="input-field col s12">
+                  <input
+                    id="storeid"
+                    name="storeid"
+                    type="text"
+                    class="validate"
+                    required
+                  />
+                  <label for="storeid">Store ID</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="input-field col s12">
+                  <input
+                    id="password"
+                    name="password"
+                    type="password"
+                    class="validate"
+                    required
+                  />
+                  <label for="password">Password</label>
+                </div>
+              </div>
+              <div
+                id="loginError"
+                style="color:red; margin-bottom:10px; display:none;"
+              ></div>
+              <button
+                style="width: 100%"
+                type="submit"
+                class="btn"
+              >Login</button>
+            </form>
+
+            <p class="forgot-text">
+              Forgot password?
+              <a href="/forgot-password" style="color:black; text-decoration: underline;">Reset now.</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      document.getElementById('loginForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const storeid = document.getElementById('storeid').value.trim();
+        const password = document.getElementById('password').value;
+
+        const response = await fetch('/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ storeid, password })
+        });
+
+        if (response.ok) {
+          window.location.href = '/tables';
+        } else {
+          const data = await response.json();
+          const errorDiv = document.getElementById('loginError');
+          errorDiv.textContent = data.error || 'Login failed.';
+          errorDiv.style.display = 'block';
+        }
+      });
+      </script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"
+    ></script>
+  </body>
+</html>
